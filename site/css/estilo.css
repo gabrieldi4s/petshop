@@ -1,0 +1,52 @@
+.container-cinza{
+	background-color: #777; 
+}
+
+.container-cinza-claro{
+	background-color: #CCC;
+}
+
+.container-cinza-escuro{
+	background-color: #212121;
+}
+
+.titulosCadastros{
+		padding: 10px 50px 30px;
+		width: 100%;
+		border: 2px solid rgb(245, 176, 57);
+  		border-radius: 12px;
+  		}
+
+
+.background-grid{
+		padding: 10px 20px 30px;
+		width: 100%;
+		border: 2px solid rgb(245, 176, 57);
+  		border-radius: 12px;
+  		background-color:rgb(245, 176, 57);
+}
+
+.background-grid-footer{
+		width: 100%;
+		padding: 10px 20px 40px;
+		border: 2px solid rgb(245, 176, 57);
+  		border-radius: 12px;
+  		background-color:rgb(245, 176, 57);
+}
+
+.botaoAcessar {
+	color: #FFFFFF;
+}
+
+p{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: center;
+
+}
+
+h2{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 30px;
+
+}
