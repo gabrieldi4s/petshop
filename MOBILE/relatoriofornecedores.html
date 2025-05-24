@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feliz Cão</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .navbar {
+      background-color: #ffc107;
+      padding: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .navbar-toggler {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      position: relative;
+    }
+
+    .navbar-toggler-icon {
+      display: block;
+      width: 30px;
+      height: 3px;
+      background-color: #212529;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .navbar-toggler-icon::before,
+    .navbar-toggler-icon::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 3px;
+      background-color: #212529;
+      transition: all 0.3s;
+    }
+
+    .navbar-toggler-icon::before {
+      transform: translateY(-8px);
+    }
+
+    .navbar-toggler-icon::after {
+      transform: translateY(8px);
+    }
+
+    .navbar-toggler.active .navbar-toggler-icon {
+      background-color: transparent;
+    }
+
+    .navbar-toggler.active .navbar-toggler-icon::before {
+      transform: rotate(45deg);
+    }
+
+    .navbar-toggler.active .navbar-toggler-icon::after {
+      transform: rotate(-45deg);
+    }
+
+    .navbar-collapse {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      height: 100vh;
+      background-color: #ffc107;
+      overflow-y: auto;
+      transition: right 0.3s ease-out;
+      z-index: 1000;
+      box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      padding-top: 15px;
+    }
+    
+    .menu-header {
+      padding: 0 15px 15px 15px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+    }
+    
+    .menu-header img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .navbar-collapse.show {
+      right: 0;
+    }
+
+    .nav-item {
+      width: 100%;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link {
+      display: block;
+      padding: 15px 20px;
+      color: #212529;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: left;
+    }
+
+    .dropdown-menu {
+      background-color: #ffca2c;
+      display: none;
+      width: 100%;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 15px 20px;
+      color: #212529;
+      text-decoration: none;
+      text-align: left;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      height: calc(100vh - 80px); 
+      width: 100%;
+    }
+
+    .carousel-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel-item {
+      flex: 0 0 100%;
+      height: 100%;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; 
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.3);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-control-prev {
+      left: 10px;
+    }
+
+    .carousel-control-next {
+      right: 10px;
+    }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+
+    .carousel-indicators button {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: none;
+      cursor: pointer;
+    }
+
+    .carousel-indicators button.active {
+      background-color: white;
+      transform: scale(1.2);
+    }
+
+    @media (max-height: 500px) {
+      .carousel {
+        height: calc(100vh - 70px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a class="navbar-brand" href="menu.html">
+      <img src="imagens/logomarca.png" alt="Logomarca Feliz Cão">
+    </a>
+    <button class="navbar-toggler" type="button" onClick="toggleMenu()" aria-label="Menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse" id="navbarMenu">
+      <div class="menu-header">
+        <img src="imagens/logomarca.png" alt="Logomarca Feliz Cão">
+      </div>
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" onClick="toggleDropdown('caixaMenu')">
+            Caixa <span class="dropdown-toggle">▼</span>
+          </a>
+          <ul class="dropdown-menu" id="caixaMenu">
+            <li><a class="dropdown-item" href="caixa.html">Venda de produtos</a></li>
+            <li><a class="dropdown-item" href="carrinho.html">Carrinho de compras</a></li>
+          </ul>
+        </li>
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" onClick="toggleDropdown('cadastroMenu')">
+            Cadastro <span class="dropdown-toggle">▼</span>
+          </a>
+          <ul class="dropdown-menu" id="cadastroMenu">
+            <li><a class="dropdown-item" href="cadastrodeclientes.html">Cadastro de cliente</a></li>
+            <li><a class="dropdown-item" href="cadastrofornecedor.html">Cadastro de fornecedor</a></li>
+            <li><a class="dropdown-item" href="cadastrodeprodutos.html">Cadastro de produtos</a></li>
+            <li><a class="dropdown-item" href="cadastrodeservicos.html">Cadastro de serviços</a></li>
+          </ul>
+        </li>
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" onClick="toggleDropdown('relatoriosMenu')">
+            Relatórios <span class="dropdown-toggle">▼</span>
+          </a>
+          <ul class="dropdown-menu" id="relatoriosMenu">
+            <li><a class="dropdown-item" href="relatorioclientes.html">Relatório de clientes</a></li>
+            <li><a class="dropdown-item" href="relatoriofornecedores.html">Relatório de fornecedor</a></li>
+            <li><a class="dropdown-item" href="relatorioprodutos.html">Relatório de produtos</a></li>
+            <li><a class="dropdown-item" href="relatorioservicos.html">Relatório de serviços</a></li>
+          </ul>
+        </li>
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" onClick="toggleDropdown('sistemaMenu')">
+            Sistema <span class="dropdown-toggle">▼</span>
+          </a>
+          <ul class="dropdown-menu" id="sistemaMenu">
+            <li><a class="dropdown-item" href="cadastrodeusuarios.html">Cadastro de usuários</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  
+  
+  
+
+  <style>
+
+    .container {
+      border: 1px solid #fbbf24;
+      border-radius: 8px;
+      padding: 16px;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    h1 {
+      font-weight: 400;
+      font-size: 1.125rem;
+      margin-bottom: 16px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 600px;
+      font-size: 0.875rem;
+      text-align: center;
+      color: #4b5563;
+    }
+    thead {
+      background-color: #fbbf24;
+      color: #1a1a1a;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    th, td {
+      border: 1px solid #fbbf24;
+      padding: 8px 12px;
+      vertical-align: middle;
+    }
+    td:first-child, td:nth-child(2) {
+      text-align: left;
+    }
+    td:nth-child(3) {
+      white-space: nowrap;
+    }
+    button {
+      margin-top: 16px;
+      background-color: #fbbf24;
+      color: #1a1a1a;
+      border: none;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    button:hover {
+      background-color: #fcd34d;
+    }
+    @media (max-width: 480px) {
+      table {
+        font-size: 0.75rem;
+        min-width: 480px;
+      }
+      th, td {
+        padding: 6px 8px;
+      }
+      h1 {
+        font-size: 1rem;
+      }
+      button {
+        font-size: 0.7rem;
+        padding: 6px 10px;
+      }
+    }
+  </style>
+
+  <div class="container">
+    <h1>Relatórios de fornecedores cadastrados</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>CNPJ</th>
+          <th>Razão Social</th>
+          <th>Nome<br />Fantasia</th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <th>Celular</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>12345678000190</td>
+          <td>Distribuidora de Produtos Pet Ltda.</td>
+          <td>PetMais</td>
+          <td>atendimento@petmais.com</td>
+          <td>(11) 2222-2222</td>
+          <td>(11) 9999-9999</td>
+        </tr>
+        <tr>
+          <td>98765432000170</td>
+          <td>Importadora de Racoes e Acessorios para Animais Ltda.</td>
+          <td>PetGlobal</td>
+          <td>atendimento@petglobal.com</td>
+          <td>(21) 3333-3333</td>
+          <td>(21) 8888-8888</td>
+        </tr>
+        <tr>
+          <td>34567890000150</td>
+          <td>Industria de Brinquedos e Acessorios para Pets Ltda.</td>
+          <td>PetDiversao</td>
+          <td>atendimento@petdiversao.com</td>
+          <td>(31) 4444-4444</td>
+          <td>(31) 7777-7777</td>
+        </tr>
+        <tr>
+          <td>76543210000130</td>
+          <td>Clinica Veterinaria e Distribuidora de Medicamentos para Animais Ltda.</td>
+          <td>PetSaude</td>
+          <td>atendimento@petsaude.com</td>
+          <td>(41) 5555-5555</td>
+          <td>(41) 6666-6666</td>
+        </tr>
+        <tr>
+          <td>54321098000110</td>
+          <td>Fabricante de Alimentos para Animais de Estimacao Ltda.</td>
+          <td>PetNutri</td>
+          <td>atendimento@petnutri.com</td>
+          <td>(51) 7777-7777</td>
+          <td>(51) 8888-8888</td>
+        </tr>
+      </tbody>
+    </table>
+     <a href="relatorio_fornecedores.xls"><button type="button">Baixar relatório de fornecedores em Excel</button></a>
+  </div>
+
+  
+  
+  
+  
+  
+
+  <script>
+    function toggleMenu() {
+      const navbarMenu = document.getElementById('navbarMenu');
+      const toggler = document.querySelector('.navbar-toggler');
+      navbarMenu.classList.toggle('show');
+      toggler.classList.toggle('active');
+      
+      if (navbarMenu.classList.contains('show')) {
+        document.body.style.overflow = 'hidden';
+        if (!document.getElementById('menu-overlay')) {
+          const overlay = document.createElement('div');
+          overlay.id = 'menu-overlay';
+          overlay.style.position = 'fixed';
+          overlay.style.top = '0';
+          overlay.style.left = '0';
+          overlay.style.width = '100%';
+          overlay.style.height = '100%';
+          overlay.style.backgroundColor = 'rgba(0,0,0,0.5)';
+          overlay.style.zIndex = '999';
+          overlay.addEventListener('click', toggleMenu);
+          document.body.appendChild(overlay);
+        }
+      } else {
+        document.body.style.overflow = '';
+        const overlay = document.getElementById('menu-overlay');
+        if (overlay) {
+          overlay.remove();
+        }
+      }
+    }
+
+    function toggleDropdown(id) {
+      const dropdown = document.getElementById(id);
+      
+      const dropdowns = document.querySelectorAll('.dropdown-menu');
+      dropdowns.forEach(menu => {
+        if (menu.id !== id) {
+          menu.classList.remove('show');
+        }
+      });
+      
+      dropdown.classList.toggle('show');
+      
+      event.preventDefault();
+    }
+
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-item');
+    const indicators = document.querySelectorAll('.carousel-indicators button');
+    const totalSlides = slides.length;
+
+    function updateCarousel() {
+      const carouselInner = document.getElementById('carouselInner');
+      carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+      
+      indicators.forEach((indicator, index) => {
+        if (index === currentSlide) {
+          indicator.classList.add('active');
+        } else {
+          indicator.classList.remove('active');
+        }
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+
+    function goToSlide(slideIndex) {
+      currentSlide = slideIndex;
+      updateCarousel();
+    }
+
+    setInterval(nextSlide, 5000);
+    
+    window.addEventListener('resize', function() {
+      updateCarousel();
+    });
+    
+    updateCarousel();
+  </script>
+</body>
+</html>
